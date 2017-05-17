@@ -1,21 +1,35 @@
 {
-    "name": "wordcount-cjk",
-    "displayName": "vscode-wordcount-cjk",
+    "name": "vscode-wordcount-cjk",
+    "displayName": "Word Count CJK",
     "description": "A word count extension that support CJK languages.",
     "version": "0.0.1",
     "publisher": "holmescn",
+    "license": "SEE LICENSE IN LICENSE",
+    "keywords": ["word", "count"],
+    "preview": true,
+    "homepage": "https://github.com/holmescn/vscode-wordcount-cjk/blob/master/README.md",
+    "bugs": {
+        "url": "https://github.com/holmescn/vscode-wordcount-cjk/issues",
+        "email": "holmesconan@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/holmescn/vscode-wordcount-cjk.git"
+    },
     "engines": {
-        "vscode": "^1.12.0"
+        "vscode": "^1.0.0"
     },
     "categories": [
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onLanguage:markdown",
+        "onLanguage:plaintext",
+        "onCommand:extension.wordcount"
     ],
     "main": "./out/src/extension",
     "contributes": {
-        "commands": [{
+        "configuration": [{
             "command": "extension.sayHello",
             "title": "Hello World"
         }]
