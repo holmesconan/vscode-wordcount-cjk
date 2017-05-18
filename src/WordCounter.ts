@@ -1,33 +1,30 @@
+import { WorkspaceConfiguration } from "vscode";
+
 /**
  * The main class to provide counter functionality.
  */
 export class WordCounter {
 
     /** 中文字数 */
-    private _nChineseCharacters: number;
-    /** 非 ASCII 字符 */
-    private _nNonASCIICharacters: number;
+    private _nChineseChars: number;
+    /** 非 ASCII 字符娄 */
+    private _nNonASCIIChars: number;
     /** 英文单词数 */
     private _nEnglishWords: number;
-    /** 字符数 （不包含空格） */
-    private _nCharactersWithoutWhiteSpaces: number;
+    /** 非空白字符娄 */
+    private _nNonWhitespaceChars: number;
     /** 总字符数 */
-    private _nTotalCharacters: number;
+    private _nTotalChars: number;
 
-    /** 中文字数 */
-    get nChineseCharaters() : number { return this._nChineseCharacters; }
+    private readonly _regexWordChar: RegExp;
+    private readonly _regexASCIIChar: RegExp;
+    private readonly _regexWhitespaceChar: RegExp;
 
-    /** 非 ASCII 字符 */
-    get nNonASCIICharacters() : number { return this._nNonASCIICharacters; }
-
-    /** 英文单词数 */
-    get nEnglishWords() : number { return this._nEnglishWords; }
-
-    /** 总字符数 */
-    get nTotalCharacters() : number { return this._nTotalCharacters; }
-
-    /** 字符数 （不包含空格） */
-    get nCharactersWithoutWhiteSpaces() : number { return this._nCharactersWithoutWhiteSpaces; }
+    constructor(configuration: WorkspaceConfiguration) {
+        this._regexWordChar = new RegExp(configuration.get<string>("regexWordChar"));
+        this._regexASCIIChar = new RegExp(configuration.get<string>("regexASCIIChar"));
+        this._regexWhitespaceChar = new RegExp(configuration.get<string>("regexWhitespaceChar"));
+    }
 
     public count(text: string) {
         this._resetCounters();
@@ -37,14 +34,14 @@ export class WordCounter {
             // Get a char
             const ch = text.charAt(index);
 
-            // Count chinese characters
+            // Count chinese Chars
             if (this._isChineseCharacter(ch)) {
-                this._nChineseCharacters += 1;
+                this._nChineseChars += 1;
             }
 
             // Count non-ASCII symbols
             if (!this._isASCIICharacter(ch)) {
-                this._nNonASCIICharacters += 1;
+                this._nNonASCIIChars += 1;
             }
 
             // Count english words
@@ -57,9 +54,9 @@ export class WordCounter {
                 }
             }
 
-            // Count characters
+            // Count Chars
             if (!this._isWhiteSpace(ch)) {
-                this._nCharactersWithoutWhiteSpaces += 1;
+                this._nNonWhitespaceChars += 1;
             }
         }
 
@@ -67,7 +64,18 @@ export class WordCounter {
             this._nEnglishWords += 1;
         }
 
-        this._nTotalCharacters = text.length;
+        this._nTotalChars = text.length;
+    }
+
+    public format(fmt: string) : string {
+        let formatted = fmt.replace('${cjk}', this._nChineseChars.toString(10));
+        formatted = formatted.replace('${ascii}', (this._nTotalChars - this._nNonASCIIChars).toString(10));
+        formatted = formatted.replace('${non-ascii}', this._nNonASCIIChars.toString(10));
+        formatted = formatted.replace('${whitespace}', (this._nTotalChars - this._nNonWhitespaceChars).toString(10));
+        formatted = formatted.replace('${non-whitespace}', this._nNonWhitespaceChars.toString(10));
+        formatted = formatted.replace('${en-words}', this._nEnglishWords.toString(10));
+        formatted = formatted.replace('${total}', this._nTotalChars.toString(10));
+        return formatted;
     }
 
     /**
@@ -87,7 +95,7 @@ export class WordCounter {
      * @param ch char to be tested.
      */
     private _isASCIICharacter(ch: string) {
-        return (/[\u0000-\u00FF]/).test(ch);;
+        return this._regexASCIIChar.test(ch);;
     }
 
     /**
@@ -101,7 +109,7 @@ export class WordCounter {
      * https://en.wikipedia.org/wiki/CJK_Unified_Ideographs
      * https://en.wikipedia.org/wiki/CJK_Compatibility_Ideographs
      *
-     * @todo Refine to contains only Chinese characters.
+     * @todo Refine to contains only Chinese Chars.
      *
      * @param ch Char to be tested.
      */
@@ -121,7 +129,7 @@ export class WordCounter {
      * @param ch Char to be tested
      */
     private _isWordChar(ch: string) {
-        return (/\w/).test(ch);
+        return this._regexWordChar.test(ch);
     }
 
     /**
@@ -135,14 +143,14 @@ export class WordCounter {
      * @param ch Char to be tested.
      */
     private _isWhiteSpace(ch: string) {
-        return (/\s/).test(ch);
+        return this._regexWhitespaceChar.test(ch);
     }
 
     private _resetCounters() {
-        this._nChineseCharacters = 0;
-        this._nNonASCIICharacters = 0;
+        this._nChineseChars = 0;
+        this._nNonASCIIChars = 0;
         this._nEnglishWords = 0;
-        this._nCharactersWithoutWhiteSpaces = 0;
-        this._nTotalCharacters = 0;
+        this._nNonWhitespaceChars = 0;
+        this._nTotalChars = 0;
     }
 }

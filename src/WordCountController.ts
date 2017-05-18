@@ -1,5 +1,5 @@
 // Import the module and reference it with the alias vscode in your code below
-import { window, StatusBarItem, StatusBarAlignment, Disposable } from 'vscode';
+import { window, StatusBarItem, StatusBarAlignment, Disposable, WorkspaceConfiguration } from 'vscode';
 import { WordCounter } from './WordCounter';
 
 /**
@@ -9,8 +9,13 @@ export class WordCountController {
     private _wordCounter: WordCounter;
     private _statusBarItem: StatusBarItem;
     private _disposable: Disposable;
-    constructor(wordCounter: WordCounter) {
+    private readonly _statusBarTextTemplate: string;
+    private readonly _statusBarTooltipTemplate: string;
+    constructor(configuration: WorkspaceConfiguration, wordCounter: WordCounter) {
         this._wordCounter = wordCounter;
+        this._statusBarTextTemplate = configuration.get<string>("statusBarTextTemplate");
+        this._statusBarTooltipTemplate = configuration.get<string>("statusBarTooltipTemplate");
+
         this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
 
         // subscribe to selection change and editor activation events
@@ -36,16 +41,9 @@ export class WordCountController {
             let text = doc.getText();
             this._wordCounter.count(text);
 
-            const statusBarText = `共 ${this._wordCounter.nChineseCharaters} 字`;
-            const toolTipText = `中文字数：\t\t\t\t${this._wordCounter.nChineseCharaters}
-非 ASCII 字符数：\t\t\t${this._wordCounter.nNonASCIICharacters}
-英文单词数：\t\t\t\t${this._wordCounter.nEnglishWords}
-字符数（不包括空白字符）：\t${this._wordCounter.nCharactersWithoutWhiteSpaces}
-总字符数：\t\t\t\t${this._wordCounter.nTotalCharacters}`;
-
             // Update the status bar
-            this._statusBarItem.text = statusBarText;
-            this._statusBarItem.tooltip = toolTipText;
+            this._statusBarItem.text = this._wordCounter.format(this._statusBarTextTemplate);
+            this._statusBarItem.tooltip = this._wordCounter.format(this._statusBarTooltipTemplate);
             this._statusBarItem.show();
         } else {
             this._statusBarItem.hide();

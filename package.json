@@ -1,8 +1,8 @@
 {
     "name": "vscode-wordcount-cjk",
     "displayName": "Word Count CJK",
-    "description": "A word count extension that support CJK languages.",
-    "version": "0.1.0",
+    "description": "A word count extension that supports CJK languages.",
+    "version": "1.0.0",
     "publisher": "holmescn",
     "license": "SEE LICENSE IN LICENSE",
     "keywords": ["word", "count", "chinese", "cjk"],
@@ -32,7 +32,38 @@
         "commands": [{
             "command": "extension.wordcount",
             "title": "Word Count"
-        }]
+        }],
+        "configuration": {
+            "type": "object",
+            "title": "Word count CJK configuration",
+            "properties": {
+                "wordcount_cjk.statusBarTextTemplate": {
+                    "type": "string",
+                    "default": "共 ${cjk} 字",
+                    "description": "Customize the status bar text."
+                },
+                "wordcount_cjk.statusBarTooltipTemplate": {
+                    "type": "string",
+                    "default": "中文字数：\t\t${cjk}\n非 ASCII 字符数：\t${non-ascii}\n英文单词数：\t\t${en-words}\n非空白字符数：\t\t${non-whitespace}\n总字符数：\t\t${total}",
+                    "description": "Customize the status bar tooltip."
+                },
+                "wordcount_cjk.regexWordChar": {
+                    "type": "string",
+                    "default": "\\w",
+                    "description": "The regular expression used to test if a char is a word char."
+                },
+                "wordcount_cjk.regexASCIIChar": {
+                    "type": "string",
+                    "default": "[\\u0000-\\u00FF]",
+                    "description": "The regular expression used to test if a char is a ASCII char."
+                },
+                "wordcount_cjk.regexWhitespaceChar": {
+                    "type": "string",
+                    "default": "\\s",
+                    "description": "The regular expression used to test if a char is a whitespace."
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
