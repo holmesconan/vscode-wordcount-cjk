@@ -2,11 +2,11 @@
     "name": "vscode-wordcount-cjk",
     "displayName": "Word Count CJK",
     "description": "A word count extension that support CJK languages.",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "publisher": "holmescn",
     "license": "SEE LICENSE IN LICENSE",
-    "keywords": ["word", "count"],
-    "preview": true,
+    "keywords": ["word", "count", "chinese", "cjk"],
+    "preview": false,
     "homepage": "https://github.com/holmescn/vscode-wordcount-cjk/blob/master/README.md",
     "bugs": {
         "url": "https://github.com/holmescn/vscode-wordcount-cjk/issues",
@@ -29,9 +29,9 @@
     ],
     "main": "./out/src/extension",
     "contributes": {
-        "configuration": [{
-            "command": "extension.sayHello",
-            "title": "Hello World"
+        "commands": [{
+            "command": "extension.wordcount",
+            "title": "Word Count"
         }]
     },
     "scripts": {

@@ -36,11 +36,18 @@ export class WordCountController {
             let text = doc.getText();
             this._wordCounter.count(text);
 
+            const statusBarText = `共 ${this._wordCounter.nChineseCharaters} 字`;
+            const toolTipText = `中文字数：\t\t\t\t${this._wordCounter.nChineseCharaters}
+非 ASCII 字符数：\t\t\t${this._wordCounter.nNonASCIICharacters}
+英文单词数：\t\t\t\t${this._wordCounter.nEnglishWords}
+字符数（不包括空白字符）：\t${this._wordCounter.nCharactersWithoutWhiteSpaces}
+总字符数：\t\t\t\t${this._wordCounter.nTotalCharacters}`;
+
             // Update the status bar
-            this._statusBarItem.text = 'Hello StatusBar';
-            this._statusBarItem.tooltip = 'Test \n multiline \n tooltip';
+            this._statusBarItem.text = statusBarText;
+            this._statusBarItem.tooltip = toolTipText;
             this._statusBarItem.show();
-        } else { 
+        } else {
             this._statusBarItem.hide();
         }
     }
@@ -54,6 +61,6 @@ export class WordCountController {
      */
     dispose() {
         this._statusBarItem.dispose();
-        this._disposable.dispose();        
+        this._disposable.dispose();
     }
 }

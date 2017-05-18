@@ -30,10 +30,7 @@ A status bar item is added, and full statistics are added as a tooltip of the st
 
 ## Known Issues
 
-Since the IME will not trigger the `onDidChangeTextEditorSelection` event, the counter
-result will delay one character. This should not be a problem.
-
-Open an issue if you find others.
+I don't know it yet. Open an issue if you find one.
 
 ## Release Notes
 
