@@ -8,11 +8,11 @@ export class WordCounter {
     /** 中文字数 */
     private _nChineseChars: number;
     /** 非 ASCII 字符娄 */
-    private _nNonASCIIChars: number;
+    private _nASCIIChars: number;
     /** 英文单词数 */
     private _nEnglishWords: number;
     /** 非空白字符娄 */
-    private _nNonWhitespaceChars: number;
+    private _nWhitespaceChars: number;
     /** 总字符数 */
     private _nTotalChars: number;
 
@@ -34,45 +34,24 @@ export class WordCounter {
             // Get a char
             const ch = text.charAt(index);
 
-            // Count chinese Chars
-            if (this._isChineseCharacter(ch)) {
-                this._nChineseChars += 1;
-            }
-
-            // Count non-ASCII symbols
-            if (!this._isASCIICharacter(ch)) {
-                this._nNonASCIIChars += 1;
-            }
-
-            // Count english words
-            if (this._isWordChar(ch)) {
-                inWord = true;
-            } else {
-                if (inWord) {
-                    this._nEnglishWords += 1;
-                    inWord = false;
-                }
-            }
-
-            // Count Chars
-            if (!this._isWhiteSpace(ch)) {
-                this._nNonWhitespaceChars += 1;
-            }
+            this._countChineseChar(ch);
+            this._countASCIIChar(ch);
+            inWord = this._countEnglishWord(ch, inWord);
+            this._countWhitespaceChar(ch);
         }
-
-        if (inWord) {
-            this._nEnglishWords += 1;
-        }
+        this._countEnglishWord(' ', inWord);
 
         this._nTotalChars = text.length;
     }
 
     public format(fmt: string) : string {
         let formatted = fmt.replace('${cjk}', this._nChineseChars.toString(10));
-        formatted = formatted.replace('${ascii}', (this._nTotalChars - this._nNonASCIIChars).toString(10));
-        formatted = formatted.replace('${non-ascii}', this._nNonASCIIChars.toString(10));
-        formatted = formatted.replace('${whitespace}', (this._nTotalChars - this._nNonWhitespaceChars).toString(10));
-        formatted = formatted.replace('${non-whitespace}', this._nNonWhitespaceChars.toString(10));
+        const nNonASCIIChars = this._nTotalChars - this._nASCIIChars;
+        formatted = formatted.replace('${ascii}', this._nASCIIChars.toString(10));
+        formatted = formatted.replace('${non-ascii}', nNonASCIIChars.toString(10));
+        const nNonWhitespaceChars = this._nTotalChars - this._nWhitespaceChars;
+        formatted = formatted.replace('${whitespace}', this._nWhitespaceChars.toString(10));
+        formatted = formatted.replace('${non-whitespace}', nNonWhitespaceChars.toString(10));
         formatted = formatted.replace('${en-words}', this._nEnglishWords.toString(10));
         formatted = formatted.replace('${total}', this._nTotalChars.toString(10));
         return formatted;
@@ -94,8 +73,10 @@ export class WordCounter {
      *
      * @param ch char to be tested.
      */
-    private _isASCIICharacter(ch: string) {
-        return this._regexASCIIChar.test(ch);;
+    private _countASCIIChar(ch: string) {
+        if (this._regexASCIIChar.test(ch)) {
+            this._nASCIIChars += 1;
+        }
     }
 
     /**
@@ -113,8 +94,12 @@ export class WordCounter {
      *
      * @param ch Char to be tested.
      */
-    private _isChineseCharacter(ch: string) {
-        return (/[\u4E00-\u9FA5\uF900-\uFA2D]/).test(ch);
+    private _countChineseChar(ch: string) {
+        // Count chinese Chars
+        const regexChineseChar = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+        if (regexChineseChar.test(ch)) {
+            this._nChineseChars += 1;
+        }
     }
 
     /**
@@ -128,8 +113,15 @@ export class WordCounter {
      *
      * @param ch Char to be tested
      */
-    private _isWordChar(ch: string) {
-        return this._regexWordChar.test(ch);
+    private _countEnglishWord(ch: string, inWord: boolean) : boolean {
+        if (this._regexWordChar.test(ch)) {
+            return true;
+        } else {
+            if (inWord) {
+                this._nEnglishWords += 1;
+            }
+            return false;
+        }
     }
 
     /**
@@ -142,15 +134,17 @@ export class WordCounter {
      *
      * @param ch Char to be tested.
      */
-    private _isWhiteSpace(ch: string) {
-        return this._regexWhitespaceChar.test(ch);
+    private _countWhitespaceChar(ch: string) {
+        if (this._regexWhitespaceChar.test(ch)) {
+            this._nWhitespaceChars += 1;
+        }
     }
 
     private _resetCounters() {
         this._nChineseChars = 0;
-        this._nNonASCIIChars = 0;
+        this._nASCIIChars = 0;
         this._nEnglishWords = 0;
-        this._nNonWhitespaceChars = 0;
+        this._nWhitespaceChars = 0;
         this._nTotalChars = 0;
     }
 }
