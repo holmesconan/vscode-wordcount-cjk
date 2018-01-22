@@ -25,6 +25,7 @@
     "activationEvents": [
         "onLanguage:markdown",
         "onLanguage:plaintext",
+        "workspaceContains:**/.editorconfig",
         "onCommand:extension.wordcount"
     ],
     "main": "./out/src/extension",
