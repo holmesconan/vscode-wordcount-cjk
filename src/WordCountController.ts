@@ -9,8 +9,10 @@ export class WordCountController {
     private _wordCounter: WordCounter;
     private _statusBarItem: StatusBarItem;
     private _disposable: Disposable;
+    private _delayUpdateTimer: any;
     private readonly _statusBarTextTemplate: string;
     private readonly _statusBarTooltipTemplate: string;
+
     constructor(configuration: WorkspaceConfiguration, wordCounter: WordCounter) {
         this._wordCounter = wordCounter;
         this._statusBarTextTemplate = configuration.get<string>("statusBarTextTemplate");
@@ -52,6 +54,15 @@ export class WordCountController {
 
     private _onEvent() {
         this.update();
+
+        if (this._delayUpdateTimer) {
+            clearTimeout(this._delayUpdateTimer);
+        }
+
+        this._delayUpdateTimer = setTimeout(() => {
+            this._delayUpdateTimer = null;
+            this.update();
+        }, 500);
     }
 
     /**

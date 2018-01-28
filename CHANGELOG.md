@@ -7,6 +7,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### Enhancement
 - Format string supports calculation. [Issue #2](https://github.com/holmescn/vscode-wordcount-cjk/issues/2)
 
+### Fix
+- Add a timer to update count, which fix the first issue of delay count.
+
 ## [1.0.1] - 2018-01-22
 ### Added
 - Add a new activate method through `.editorconfig`. [Issue #1](https://github.com/holmescn/vscode-wordcount-cjk/issues/1)

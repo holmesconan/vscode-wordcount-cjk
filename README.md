@@ -77,22 +77,9 @@ The built-in regular expression is `[\u4E00-\u9FA5\uF900-\uFA2D]`, which contain
 if someone other than Chinese use this extension, I will try to seperate the Chinese,
 Japanese and Korean characters counters. For now, they are mixed.
 
-## Known Issues
-
-Since the new input will not trigger the `onDidChangeTextEditorSelection` event, the counter
-result will delay one character. This should not be a problem.
-
-Open an issue if you find others.
-
-## Release Notes
-
-### 1.0.0
-
-Initial release.
-
 ## TODO
 
-1. Seperate Chinese, Janpanese and Korean
+1. Add `Word Count Activate` command.
 
 If you have any requested feature, open an issue!
 

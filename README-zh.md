@@ -70,22 +70,8 @@ VSCode 的 word count 都是老外写的，没有一个能统计中文字数的�
 
 如果有需求的话，以后可能会把 CJK 三个字符集分开。
 
-## Known Issues
-
-VSCode 在输入的时候，触发 `onDidChangeTextEditorSelection` 事件时，会少得到一个字节的文本，这会使得统计结果
-总是少一个字。其实也没有什么大碍，只要按个空格或者方向键，就统计正常了。
-
-如果你还发现了其它的问题，请在 issue 区告诉我，谢谢!
-
-## Release Notes
-
-### 1.0.0
-
-Initial release.
-
 ## TODO
 
-1. 分离中日韩文
-2. 如果你有什么想统计的，话在 issue 里告诉我
+1. 添加一个“激活”命令。
 
 **Enjoy!**
