@@ -35,13 +35,13 @@ VSCode 的 word count 都是老外写的，没有一个能统计中文字数的�
 
 在 `wordcount_cjk.statusBarTextTemplate` 和 `wordcount_cjk.statusBarTooltipTemplate`, 可以使用下面这些占位符:
 
-1. `${cjk}`: CJK 字符数.
-2. `${ascii}`: ASCII 码字符数.
-2. `${non-ascii}`: 非 ASCII 码字符数.
-3. `${whitespace}`: 空白字符数.
-3. `${non-whitespace}`: 非空白字符数.
-4. `${en-words}`: 英语单词数.
-5. `${total}`: 总字符数.
+1. `cjk`: CJK 字符数.
+2. `ascii`: ASCII 码字符数.
+3. `whitespace`: 空白字符数.
+4. `en_words`: 英语单词数.
+5. `total`: 总字符数.
+
+从 1.1 版开始，格式化字符串可以进行计算了，比如：`共 ${total - ascii} 字`, 其中的表达式，必须是一个有效的 JavaScript 表达式。
 
 ### 英语单词字符
 

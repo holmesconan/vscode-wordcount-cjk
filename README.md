@@ -35,13 +35,14 @@ tell me in an issue.
 
 in `wordcount_cjk.statusBarTextTemplate` and `wordcount_cjk.statusBarTooltipTemplate`, the following placeholder could be used:
 
-1. `${cjk}`: The number of CJK characters.
-2. `${ascii}`: The number of ASCII characters.
-2. `${non-ascii}`: The number of non-ASCII characters.
-3. `${whitespace}`: The number of whitespace characters.
-3. `${non-whitespace}`: The number of non-whitespace characters.
-4. `${en-words}`: The number of english words.
-5. `${total}`: The total number of characters.
+1. `cjk`: The number of CJK characters.
+2. `ascii`: The number of ASCII characters.
+3. `whitespace`: The number of whitespace characters.
+4. `en_words`: The number of english words.
+5. `total`: The total number of characters.
+
+Since version 1.1, calculation could be done in format string, so one can do this: `${total - cjk} chars`. The expression should
+be a valid JavaScript expresion.
 
 ### Word char
 

@@ -2,7 +2,7 @@
     "name": "vscode-wordcount-cjk",
     "displayName": "Word Count CJK",
     "description": "A word count extension that supports CJK languages.",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "publisher": "holmescn",
     "license": "SEE LICENSE IN LICENSE",
     "keywords": ["word", "count", "chinese", "cjk"],
@@ -45,7 +45,7 @@
                 },
                 "wordcount_cjk.statusBarTooltipTemplate": {
                     "type": "string",
-                    "default": "中文字数：\t\t${cjk}\n非 ASCII 字符数：\t${non-ascii}\n英文单词数：\t\t${en-words}\n非空白字符数：\t\t${non-whitespace}\n总字符数：\t\t${total}",
+                    "default": "中文字数：\t\t${cjk}\n非 ASCII 字符数：\t${total - ascii}\n英文单词数：\t\t${en_words}\n非空白字符数：\t\t${total - whitespace}\n总字符数：\t\t${total}",
                     "description": "Customize the status bar tooltip."
                 },
                 "wordcount_cjk.regexWordChar": {

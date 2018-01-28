@@ -15,15 +15,20 @@ export class WordCounter {
     private _nWhitespaceChars: number;
     /** 总字符数 */
     private _nTotalChars: number;
+    /** 格式化函数 */
+    private _replaceFuncs: Map<string, Function>
 
     private readonly _regexWordChar: RegExp;
     private readonly _regexASCIIChar: RegExp;
     private readonly _regexWhitespaceChar: RegExp;
+    private readonly _regexFormatReplace: RegExp;
 
     constructor(configuration: WorkspaceConfiguration) {
         this._regexWordChar = new RegExp(configuration.get<string>("regexWordChar"));
         this._regexASCIIChar = new RegExp(configuration.get<string>("regexASCIIChar"));
         this._regexWhitespaceChar = new RegExp(configuration.get<string>("regexWhitespaceChar"));
+        this._regexFormatReplace = /\$\{([^}]+)\}/g;
+        this._replaceFuncs = new Map<string, Function>();
     }
 
     public count(text: string) {
@@ -45,16 +50,33 @@ export class WordCounter {
     }
 
     public format(fmt: string) : string {
-        let formatted = fmt.replace('${cjk}', this._nChineseChars.toString(10));
-        const nNonASCIIChars = this._nTotalChars - this._nASCIIChars;
-        formatted = formatted.replace('${ascii}', this._nASCIIChars.toString(10));
-        formatted = formatted.replace('${non-ascii}', nNonASCIIChars.toString(10));
-        const nNonWhitespaceChars = this._nTotalChars - this._nWhitespaceChars;
-        formatted = formatted.replace('${whitespace}', this._nWhitespaceChars.toString(10));
-        formatted = formatted.replace('${non-whitespace}', nNonWhitespaceChars.toString(10));
-        formatted = formatted.replace('${en-words}', this._nEnglishWords.toString(10));
-        formatted = formatted.replace('${total}', this._nTotalChars.toString(10));
-        return formatted;
+        const _this = this;
+        const cjk = this._nChineseChars;
+        const ascii = this._nASCIIChars;
+        const whitespace = this._nWhitespaceChars;
+        const en_words = this._nEnglishWords;
+        const total = this._nTotalChars;
+
+        return fmt.replace(this._regexFormatReplace, (matches, expr) => {
+            if (!_this._replaceFuncs.has(matches)) {
+                _this._replaceFuncs[matches] = _this._compileExpiession(expr);
+            }
+
+            const f = _this._replaceFuncs[matches];
+            return f(cjk, ascii, whitespace, en_words, total);
+        });
+    }
+
+    private _compileExpiession(expr) {
+        const f = new Function('cjk', 'ascii', 'whitespace', 'en_words', 'total', `return ${expr};`);
+
+        try {
+            f(0, 0, 0, 0, 0);
+        } catch (e) {
+            return new Function('cjk', 'ascii', 'whitespace', 'en_words', 'total', `return '无效表达式: ${expr}';`);
+        }
+
+        return f;
     }
 
     /**
