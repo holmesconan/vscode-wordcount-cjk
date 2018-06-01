@@ -10,13 +10,17 @@ export class WordCountController {
     private _statusBarItem: StatusBarItem;
     private _disposable: Disposable;
     private _delayUpdateTimer: any;
+    private _isActive: boolean;
     private readonly _statusBarTextTemplate: string;
     private readonly _statusBarTooltipTemplate: string;
+    private readonly _activateLanguages: Array<string>;
 
     constructor(configuration: WorkspaceConfiguration, wordCounter: WordCounter) {
+        this._isActive = false;
         this._wordCounter = wordCounter;
         this._statusBarTextTemplate = configuration.get<string>("statusBarTextTemplate");
         this._statusBarTooltipTemplate = configuration.get<string>("statusBarTooltipTemplate");
+        this._activateLanguages = configuration.get<Array<string>>("activateLanguages");
 
         this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
 
@@ -38,18 +42,32 @@ export class WordCountController {
 
         let doc = editor.document;
 
-        if (force || doc.languageId === "markdown" || doc.languageId === 'plaintext') {
+        if (force || this.shouldActivate(doc.languageId) || this._isActive) {
             // Update word count.
             let text = doc.getText();
             this._wordCounter.count(text);
 
             // Update the status bar
-            this._statusBarItem.text = this._wordCounter.format(this._statusBarTextTemplate);
-            this._statusBarItem.tooltip = this._wordCounter.format(this._statusBarTooltipTemplate);
-            this._statusBarItem.show();
+            try {
+                this._statusBarItem.text = this._wordCounter.format(this._statusBarTextTemplate);
+                this._statusBarItem.tooltip = this._wordCounter.format(this._statusBarTooltipTemplate);
+                this._statusBarItem.show();
+            } catch (e) {
+                window.showErrorMessage('Something is wrong when update status bar');
+            }
         } else {
             this._statusBarItem.hide();
         }
+    }
+
+    private shouldActivate(languageId: string): boolean {
+        for(var l of this._activateLanguages) {
+            if (l === languageId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private _onEvent() {
@@ -71,5 +89,15 @@ export class WordCountController {
     dispose() {
         this._statusBarItem.dispose();
         this._disposable.dispose();
+    }
+
+    activate() {
+        this._isActive = true;
+        this.update();
+    }
+
+    deactivate() {
+        this._isActive = false;
+        this._statusBarItem.hide();
     }
 }

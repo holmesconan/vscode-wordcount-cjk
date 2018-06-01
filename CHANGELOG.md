@@ -3,6 +3,14 @@ All notable changes to the "wordcount-cjk" extension will be documented in this 
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.0] - 2018-06-01
+### Enhancement
+- Add `activateLanguages` options.
+- Add `Word Count Activate` and `Word Count Deactivate` command
+
+### Remove
+- Remove the activate method by `.editorconfig`.
+
 ## [1.1.0] - 2018-01-28
 ### Enhancement
 - Format string supports calculation. [Issue #2](https://github.com/holmescn/vscode-wordcount-cjk/issues/2)

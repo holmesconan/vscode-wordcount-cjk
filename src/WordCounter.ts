@@ -6,17 +6,17 @@ import { WorkspaceConfiguration } from "vscode";
 export class WordCounter {
 
     /** 中文字数 */
-    private _nChineseChars: number;
+    private _nChineseChars: number = 0;
     /** 非 ASCII 字符娄 */
-    private _nASCIIChars: number;
+    private _nASCIIChars: number = 0;
     /** 英文单词数 */
-    private _nEnglishWords: number;
+    private _nEnglishWords: number = 0;
     /** 非空白字符娄 */
-    private _nWhitespaceChars: number;
+    private _nWhitespaceChars: number = 0;
     /** 总字符数 */
-    private _nTotalChars: number;
+    private _nTotalChars: number = 0;
     /** 格式化函数 */
-    private _replaceFuncs: Map<string, Function>
+    private _replaceFuncs: { [key: string]: Function }
 
     private readonly _regexWordChar: RegExp;
     private readonly _regexASCIIChar: RegExp;
@@ -28,7 +28,7 @@ export class WordCounter {
         this._regexASCIIChar = new RegExp(configuration.get<string>("regexASCIIChar"));
         this._regexWhitespaceChar = new RegExp(configuration.get<string>("regexWhitespaceChar"));
         this._regexFormatReplace = /\$\{([^}]+)\}/g;
-        this._replaceFuncs = new Map<string, Function>();
+        this._replaceFuncs = {};
     }
 
     public count(text: string) {
@@ -58,7 +58,7 @@ export class WordCounter {
         const total = this._nTotalChars;
 
         return fmt.replace(this._regexFormatReplace, (matches, expr) => {
-            if (!_this._replaceFuncs.has(matches)) {
+            if (!_this._replaceFuncs[matches]) {
                 _this._replaceFuncs[matches] = _this._compileExpiession(expr);
             }
 
@@ -67,7 +67,7 @@ export class WordCounter {
         });
     }
 
-    private _compileExpiession(expr) {
+    private _compileExpiession(expr: string) {
         const f = new Function('cjk', 'ascii', 'whitespace', 'en_words', 'total', `return ${expr};`);
 
         try {

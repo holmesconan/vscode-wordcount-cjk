@@ -17,7 +17,7 @@ In current version, the following format is supported:
 1. Markdown file.
 2. Plain text file.
 
-For other files that are not supported, such as ReStructuredText, a command `Word Count` is offered.
+For other files that are not supported, such as ReStructuredText, a command `Word Count` is offered. The command only calculate once. For keep tracking the word count, you can use the `Word Count Activate` command, and the `Word Count Deactivate` to stop tracking.
 
 A status bar item is added, and full statistics are added as a tooltip of the status bar item.
 
@@ -32,6 +32,7 @@ tell me in an issue.
 * `wordcount_cjk.regexWordChar`: The regular expression used to test if a char is a word char.
 * `wordcount_cjk.regexASCIIChar`: The regular expression used to test if a char is a ASCII char.
 * `wordcount_cjk.regexWhitespaceChar`: The regular expression used to test if a char is a whitespace.
+* `wordcount_cjk.activateLanguages`: The languages that activate the extension.
 
 in `wordcount_cjk.statusBarTextTemplate` and `wordcount_cjk.statusBarTooltipTemplate`, the following placeholder could be used:
 
@@ -79,7 +80,7 @@ Japanese and Korean characters counters. For now, they are mixed.
 
 ## TODO
 
-1. Add `Word Count Activate` command.
+1. None
 
 If you have any requested feature, open an issue!
 

@@ -1,82 +1,110 @@
 {
-    "name": "vscode-wordcount-cjk",
-    "displayName": "Word Count CJK",
-    "description": "A word count extension that supports CJK languages.",
-    "version": "1.1.0",
-    "publisher": "holmescn",
-    "license": "SEE LICENSE IN LICENSE",
-    "keywords": ["word", "count", "chinese", "cjk"],
-    "preview": false,
-    "homepage": "https://github.com/holmescn/vscode-wordcount-cjk/blob/master/README.md",
-    "bugs": {
-        "url": "https://github.com/holmescn/vscode-wordcount-cjk/issues",
-        "email": "holmesconan@gmail.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/holmescn/vscode-wordcount-cjk.git"
-    },
-    "engines": {
-        "vscode": "^1.0.0"
-    },
-    "categories": [
-        "Other"
+  "name": "vscode-wordcount-cjk",
+  "displayName": "Word Count CJK",
+  "description": "A word count extension that supports CJK languages.",
+  "version": "1.2.0",
+  "publisher": "holmescn",
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": [
+    "word",
+    "count",
+    "chinese",
+    "cjk"
+  ],
+  "preview": false,
+  "homepage": "https://github.com/holmescn/vscode-wordcount-cjk/blob/master/README.md",
+  "bugs": {
+    "url": "https://github.com/holmescn/vscode-wordcount-cjk/issues",
+    "email": "holmesconan@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/holmescn/vscode-wordcount-cjk.git"
+  },
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown",
+    "onLanguage:plaintext",
+    "onCommand:extension.wordcount",
+    "onCommand:extension.wordcountActivate"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.wordcount",
+        "title": "Word Count"
+      },
+      {
+        "command": "extension.wordcountActivate",
+        "title": "Word Count Activate"
+      },
+      {
+        "command": "extension.wordcountDeactivate",
+        "title": "Word Count Deactivate"
+      }
     ],
-    "activationEvents": [
-        "onLanguage:markdown",
-        "onLanguage:plaintext",
-        "workspaceContains:**/.editorconfig",
-        "onCommand:extension.wordcount"
-    ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "commands": [{
-            "command": "extension.wordcount",
-            "title": "Word Count"
-        }],
-        "configuration": {
-            "type": "object",
-            "title": "Word count CJK configuration",
-            "properties": {
-                "wordcount_cjk.statusBarTextTemplate": {
-                    "type": "string",
-                    "default": "共 ${cjk} 字",
-                    "description": "Customize the status bar text."
-                },
-                "wordcount_cjk.statusBarTooltipTemplate": {
-                    "type": "string",
-                    "default": "中文字数：\t\t${cjk}\n非 ASCII 字符数：\t${total - ascii}\n英文单词数：\t\t${en_words}\n非空白字符数：\t\t${total - whitespace}\n总字符数：\t\t${total}",
-                    "description": "Customize the status bar tooltip."
-                },
-                "wordcount_cjk.regexWordChar": {
-                    "type": "string",
-                    "default": "\\w",
-                    "description": "The regular expression used to test if a char is a word char."
-                },
-                "wordcount_cjk.regexASCIIChar": {
-                    "type": "string",
-                    "default": "[\\u0000-\\u00FF]",
-                    "description": "The regular expression used to test if a char is a ASCII char."
-                },
-                "wordcount_cjk.regexWhitespaceChar": {
-                    "type": "string",
-                    "default": "\\s",
-                    "description": "The regular expression used to test if a char is a whitespace."
-                }
-            }
+    "configuration": {
+      "type": "object",
+      "title": "Word count CJK configuration",
+      "properties": {
+        "wordcount_cjk.statusBarTextTemplate": {
+          "type": "string",
+          "default": "共 ${cjk} 字",
+          "description": "Customize the status bar text."
+        },
+        "wordcount_cjk.statusBarTooltipTemplate": {
+          "type": "string",
+          "default": "中文字数：\t\t${cjk}\n非 ASCII 字符数：\t${total - ascii}\n英文单词数：\t\t${en_words}\n非空白字符数：\t\t${total - whitespace}\n总字符数：\t\t${total}",
+          "description": "Customize the status bar tooltip."
+        },
+        "wordcount_cjk.regexWordChar": {
+          "type": "string",
+          "default": "\\w",
+          "description": "The regular expression used to test if a char is a word char."
+        },
+        "wordcount_cjk.regexASCIIChar": {
+          "type": "string",
+          "default": "[\\u0000-\\u00FF]",
+          "description": "The regular expression used to test if a char is a ASCII char."
+        },
+        "wordcount_cjk.regexWhitespaceChar": {
+          "type": "string",
+          "default": "\\s",
+          "description": "The regular expression used to test if a char is a whitespace."
+        },
+        "wordcount_cjk.activateLanguages": {
+          "type": "array",
+          "default": [
+            "markdown",
+            "plaintext"
+          ],
+          "description": "The languages to activate this extension."
         }
-    },
-    "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^2.0.3",
-        "vscode": "^1.0.0",
-        "mocha": "^2.3.3",
-        "@types/node": "^6.0.40",
-        "@types/mocha": "^2.2.32"
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6",
+    "tslint": "^5.8.0",
+    "mocha": "^2.3.3",
+    "@types/node": "^7.0.43",
+    "@types/mocha": "^2.2.42"
+  },
+  "dependencies": {
+    "mocha": "^2.5.3"
+  }
 }

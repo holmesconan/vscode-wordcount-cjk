@@ -19,7 +19,7 @@ VSCode 的 word count 都是老外写的，没有一个能统计中文字数的�
 1. Markdown 文件.
 2. 纯文本文件.
 
-对于其它类型的文件，比如 ReStructuredText，如果也想统计一下，我还提供了一个 `Word Count` 命令。
+对于其它类型的文件，比如 ReStructuredText，如果也想统计一下，我还提供了一个 `Word Count` 命令。不过，这个命令只会计数一次。如果想一直跟踪文档字数的变化，可以使用 `Word Count Activate`。要关闭计数功能，可以使用 `Word Count Deactivate` 命令。
 
 统计结果会显示在状态栏，把鼠标悬停在状态栏上，可以看到完整的统计结果。在当然的版本中，CJK 字符是混在一起计算的。
 因为我不懂日语和韩语，不知道他们应该怎么统计。如果有哪位朋友有这个需求，并且知道要怎么统计的，请在 issue 区留言
@@ -32,6 +32,7 @@ VSCode 的 word count 都是老外写的，没有一个能统计中文字数的�
 * `wordcount_cjk.regexWordChar`: 用来判断一个字符是否为英语单词字符的正则表达式.
 * `wordcount_cjk.regexASCIIChar`: 用来判断一个字符是否为 ASCII 码字符的正则表达式.
 * `wordcount_cjk.regexWhitespaceChar`: 用来判断一个字符是否为空白字符的正则表达式.
+* `wordcount_cjk.activateLanguages`: 设置哪些类型的文件会显示字数统计。
 
 在 `wordcount_cjk.statusBarTextTemplate` 和 `wordcount_cjk.statusBarTooltipTemplate`, 可以使用下面这些占位符:
 
@@ -72,6 +73,6 @@ VSCode 的 word count 都是老外写的，没有一个能统计中文字数的�
 
 ## TODO
 
-1. 添加一个“激活”命令。
+1. 无
 
 **Enjoy!**
