@@ -27,6 +27,8 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(command1);
+    context.subscriptions.push(command2);
+    context.subscriptions.push(command3);
     context.subscriptions.push(controller);
 }
 
