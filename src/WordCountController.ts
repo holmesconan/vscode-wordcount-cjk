@@ -19,7 +19,7 @@ export class WordCountController {
         this._isActive = false;
         this._wordCounter = wordCounter;
         this._statusBarTextTemplate = configuration.get<string>("statusBarTextTemplate");
-        this._statusBarTooltipTemplate = configuration.get<string>("statusBarTooltipTemplate");
+        this._statusBarTooltipTemplate = configuration.get<string>("statusBarTooltipTemplate").replace(/\\n/g, '\n');
         this._activateLanguages = configuration.get<Array<string>>("activateLanguages");
 
         this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
