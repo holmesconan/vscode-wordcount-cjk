@@ -60,7 +60,7 @@
         },
         "wordcount_cjk.statusBarTooltipTemplate": {
           "type": "string",
-          "default": "中文字数：\t\t${cjk}\n非 ASCII 字符数：\t${total - ascii}\n英文单词数：\t\t${en_words}\n非空白字符数：\t\t${total - whitespace}\n总字符数：\t\t${total}",
+          "default": "中文字数：\\t\\t${cjk}\\n非 ASCII 字符数：\\t${total - ascii}\\n英文单词数：\\t\\t${en_words}\\n非空白字符数：\\t\\t${total - whitespace}\\n总字符数：\\t\\t${total}",
           "description": "Customize the status bar tooltip."
         },
         "wordcount_cjk.regexWordChar": {

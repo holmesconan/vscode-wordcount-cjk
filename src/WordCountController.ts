@@ -19,7 +19,7 @@ export class WordCountController {
         this._isActive = false;
         this._wordCounter = wordCounter;
         this._statusBarTextTemplate = configuration.get<string>("statusBarTextTemplate");
-        this._statusBarTooltipTemplate = configuration.get<string>("statusBarTooltipTemplate").replace(/\\n/g, '\n');
+        this._statusBarTooltipTemplate = configuration.get<string>("statusBarTooltipTemplate").replace(/\\n/g, '\n').replace(/\\t/g, '\t');
         this._activateLanguages = configuration.get<Array<string>>("activateLanguages");
 
         this._statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
@@ -44,8 +44,16 @@ export class WordCountController {
 
         if (force || this.shouldActivate(doc.languageId) || this._isActive) {
             // Update word count.
-            let text = doc.getText();
-            this._wordCounter.count(text);
+            if (editor.selection.isEmpty) {
+                let text = doc.getText();
+                this._wordCounter.count(text);
+            } else {
+                let text = doc.getText();
+                const start = editor.selection.start.character;
+                const end = editor.selection.end.character;
+
+                this._wordCounter.count(text.substring(start, end));
+            }
 
             // Update the status bar
             try {
