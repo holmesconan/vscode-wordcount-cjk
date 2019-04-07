@@ -48,11 +48,8 @@ export class WordCountController {
                 let text = doc.getText();
                 this._wordCounter.count(text);
             } else {
-                let text = doc.getText();
-                const start = editor.selection.start.character;
-                const end = editor.selection.end.character;
-
-                this._wordCounter.count(text.substring(start, end));
+                const text = editor.document.getText(editor.selection)
+                this._wordCounter.count(text);
             }
 
             // Update the status bar
