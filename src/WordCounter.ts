@@ -7,11 +7,11 @@ export class WordCounter {
 
     /** 中文字数 */
     private _nChineseChars: number = 0;
-    /** 非 ASCII 字符娄 */
+    /** 非 ASCII 字符数 */
     private _nASCIIChars: number = 0;
     /** 英文单词数 */
     private _nEnglishWords: number = 0;
-    /** 非空白字符娄 */
+    /** 非空白字符数 */
     private _nWhitespaceChars: number = 0;
     /** 总字符数 */
     private _nTotalChars: number = 0;
